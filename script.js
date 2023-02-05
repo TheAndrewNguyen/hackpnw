@@ -12,7 +12,6 @@ add.addEventListener(`click`, (e)=>{
         temp.setAttribute(`role`, `alert`);
         temp.innerHTML = `please enter a task to add it to the list
         <button type="button" class="btn btn-close" data-bs-dismiss="alert"></button>`;
-
         container[0].appendChild(temp);
     } else {
         let newRow = document.createElement(`div`);
@@ -35,6 +34,7 @@ add.addEventListener(`click`, (e)=>{
         checkbox.setAttribute(`type`, `checkbox`);
         checkbox.setAttribute(`value`, ``);
         checkbox.setAttribute(`style`, `position:absolute; left:2; top:30%;`);
+        
 
         let newTask = document.createElement(`article`);
         let p = document.createElement(`p`);
@@ -52,6 +52,7 @@ add.addEventListener(`click`, (e)=>{
         delBtn.setAttribute(`id`, `delete`);
         delBtn.setAttribute(`type`, `button`);
         delBtn.innerHTML = `delete`;
+        
         editBtn.setAttribute(`class`, `btn btn-warning`);
         editBtn.setAttribute(`id`, `edit`);
         editBtn.setAttribute(`style`, `margin-right:5px;`);
@@ -64,7 +65,12 @@ add.addEventListener(`click`, (e)=>{
 
         newCol.appendChild(newTask);
         input.value = ``;
-
+        
+        checkbox.addEventListener('click',()=>{
+            console.log("clicked");
+            newCol.removeChild(newTask);
+            newTask.setAttribute(`style`, `text-align:center; text-decoration:line-through;`);
+        })
         delBtn.addEventListener(`click`, ()=>{ //when delete button is clicked
             console.log("clicked");
             newCol.removeChild(newTask);
@@ -91,16 +97,23 @@ add.addEventListener(`click`, (e)=>{
         closeButton.setAttribute(`style`, `position:absolute; top:0; right:0;`);
         closeButton.innerHTML = `close`;
         editBtn.addEventListener(`click`, ()=>{ //when edit button is clicked
+            if (editBtn.getAttribute('id')==='edit'){
+                p.contentEditable = true;  
+                p.style.backgroundColor = "#dddbdb";
+                editBtn.setAttribute(`id`, `end`);
+                editBtn.innerHTML = `Confirm`;
+                editBtn.setAttribute(`class`, `btn btn-success`);
+            }else{
+                p.contentEditable = false;  
+                p.style.backgroundColor = 'transparent';
+                editBtn.setAttribute(`id`, `edit`);
+                editBtn.innerHTML = `edit`;
+                editBtn.setAttribute(`class`, `btn btn-warning`);
+            }
+                
+            
+            
 
-            container[0].appendChild(row);
-
-            row.appendChild(col);
-            col.appendChild(editDiv);
-
-            editDiv.appendChild(tempInput); //add input/btn to div
-            editDiv.appendChild(closeButton);
-
-            editBtn.disabled = true; //prevents user from creating multiple edit inputs/btns
         });
         closeButton.addEventListener(`click`, ()=>{
             editDiv.removeChild(tempInput);
